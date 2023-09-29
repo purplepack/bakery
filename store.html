@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Store</title>
+  </head>
+  <body>
+    <section class="p-5">
+      <h1 class="text-2xl text-center uppercase mb-5">Ingredients in store</h1>
+      <div class="max-w-lg  mx-auto bg-blue-500 shadow-md rounded-lg overflow-hidden w-full">
+        <table class="w-full text-start">
+            <thead class="">
+                <tr class="bg-gray-200">
+                    <th class="py-2 px-4 text-start">Ingredient</th>
+                    <th class="py-2 px-4 text-start">Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <? var ingredients = getStoreIngredients();
+                  for (let ingredient of ingredients) { ?>
+                    <tr>
+                        <td class="py-2 px-4"><?=  ingredient[1]  ?></td>
+                        <td class="py-2 px-4"><?=  ingredient[2] + ' ' + ingredient[3]  ?></td>
+                    </tr>
+                <? } ?>
+            </tbody>
+        </table>
+      </div>
+    </section>
+
+  </body>
+</html>

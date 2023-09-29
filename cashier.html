@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cashier</title>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-blue-500 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Brand/Logo -->
+            <a href="#" class="text-white text-2xl font-bold">Cashier</a>
+            
+            <!-- Navigation Links -->
+            <ul class="flex space-x-4">
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev" class="text-white hover:text-gray-200">Home</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=add" class="text-white hover:text-gray-200">Add Products</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=sales" class="text-white hover:text-gray-200">Sales Transaction</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=cashier" class="text-white hover:text-gray-200">Cashier</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=other" class="text-white hover:text-gray-200">Others</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
+        <h1 class="text-2xl font-semibold mb-4">Cashier Management</h1>
+        
+        <!-- Add New Cashier Form -->
+        <form id="addCashierForm">
+            <div class="mb-4">
+                <label for="cashierName" class="block text-sm font-medium text-gray-700">Cashier Name</label>
+                <input type="text" id="cashierName" class="mt-1 p-2 w-full border rounded-md">
+            </div>
+            <div class="mb-4">
+                <label for="cashierID" class="block text-sm font-medium text-gray-700">Cashier Name</label>
+                <input type="text" id="cashierID" class="mt-1 p-2 w-full border rounded-md">
+            </div>
+            
+            <button type="button" id="addCashierBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Cashier</button>
+        </form>
+
+        <div class="hidden flex flex-col gap-5 p-5 mt-5 bg-green-500 items-center justify-center text-white" id="successMessage">
+          Cashier Added To Database
+          <button class="px-5 py-2 bg-white rounded text-black" id="backButton">Add New</button>
+        </div>
+
+        <!-- List of Cashiers -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold mb-2">Cashiers</h2>
+            <ul id="cashierList" class="space-y-2">
+                <!-- Cashier items will be dynamically added here -->
+            </ul>
+        </div>
+
+    </div>
+    <script>
+
+      document.addEventListener("DOMContentLoaded", function() {
+            const addCashierForm = document.getElementById("addCashierForm");
+            const cashierNameInput = document.getElementById("cashier-name");
+            const addCashierBtn = document.getElementById("addCashierBtn");
+            const cashierList = document.getElementById("cashierList");
+
+            addCashierBtn.addEventListener("click", function() {
+                const cashierName = cashierNameInput.value.trim();
+                if (cashierName !== "") {
+                    // Create a new cashier item
+                    const cashierItem = document.createElement("li");
+                    cashierItem.className = "flex justify-between items-center bg-gray-200 p-2 rounded-md";
+
+                    // Cashier name
+                    const cashierNameElement = document.createElement("span");
+                    cashierNameElement.textContent = cashierName;
+
+                    // Delete button
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Delete";
+                    deleteButton.className = "bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600";
+                    deleteButton.addEventListener("click", function() {
+                        // Remove the cashier item when delete is clicked
+                        cashierItem.remove();
+                    });
+
+                    // Append elements to the cashier item
+                    cashierItem.appendChild(cashierNameElement);
+                    cashierItem.appendChild(deleteButton);
+
+                    // Append the cashier item to the list
+                    cashierList.appendChild(cashierItem);
+
+                    // Clear the input field
+                    cashierNameInput.value = "";
+                }
+            });
+        });
+
+
+      const addCashierForm = document.getElementById("addCashierForm")
+      const successMessage = document.getElementById("successMessage")
+      const backButton = document.getElementById("backButton")
+
+      addCashierForm.addEventListener("submit", submitData)
+
+      function submitData(e){
+        e.preventDefault()
+        google.script.run.withSuccessHandler(()=>{
+          addCashierForm.reset()
+          addCashierForm.classList.add("hidden")
+          successMessage.classList.remove("hidden")
+        }).withFailureHandler(()=>{
+
+        }).acceptAddData(this)
+      }
+
+      backButton.addEventListener("click", ()=>{
+        addCashierForm.classList.remove("hidden")
+        successMessage.classList.add("hidden")
+      })
+
+
+    </script>
+</body>
+
+</html>

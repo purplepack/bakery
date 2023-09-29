@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Product</title>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-blue-500 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Brand/Logo -->
+            <a href="#" class="text-white text-2xl font-bold">Your Store</a>
+            
+            <!-- Navigation Links -->
+            <ul class="flex space-x-4">
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev" class="text-white hover:text-gray-200">Home</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=add" class="text-white hover:text-gray-200">Add Products</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=sales" class="text-white hover:text-gray-200">Sales Transaction</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=cashier" class="text-white hover:text-gray-200">Cashier</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=other" class="text-white hover:text-gray-200">Others</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
+        <h1 class="text-2xl font-semibold mb-4">Add Product</h1>
+        <form id="add-form">
+            
+            <div class="grid grid-cols-2 gap-2">
+
+              <!-- Product Name -->
+              <div class="mb-4">
+                <label for="productName" class="block text-sm font-medium text-gray-700">Product Name</label>
+                <input type="text" id="producName" name="productName" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Product ID/Barcode -->
+              <div class="mb-4">
+                <label for="productId" class="block text-sm font-medium text-gray-700">Product ID/Barcode</label>
+                <input type="text" id="productId" name="productId" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description" name="description" class="mt-1 p-2 w-full border rounded-md"></textarea>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+
+            <!-- Price -->
+              <div class="mb-4">
+                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" id="price" name="price" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Cost -->
+              <div class="mb-4">
+                <label for="cost" class="block text-sm font-medium text-gray-700">Cost</label>
+                <input type="number" id="cost" name="cost" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Quantity in Stock -->
+              <div class="mb-4">
+                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity in Stock</label>
+                <input type="number" id="quantity" name="quantity" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+            </div>
+
+
+            <!-- Supplier Information -->
+            <div class="mb-4">
+                <label for="supplierInfo" class="block text-sm font-medium text-gray-700">Supplier Information</label>
+                <input type="text" id="supplierInfo" name="supplierInfo" class="mt-1 p-2 w-full border rounded-md">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+
+              <!-- Tax Rate -->
+              <div class="mb-4">
+                <label for="taxRate" class="block text-sm font-medium text-gray-700">Tax Rate</label>
+                <input type="number" id="taxRate" name="taxRate" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Categories/Tags -->
+              <div class="mb-4">
+                <label for="categories" class="block text-sm font-medium text-gray-700">Categories/Tags</label>
+                <input type="text" id="categories" name="categories" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Product</button>
+            </div>
+        </form>
+        <div class="hidden flex flex-col gap-5 p-5 mt-5 bg-green-500 items-center justify-center text-white" id="successMessage">
+          Products Added To Database
+          <button class="px-5 py-2 bg-white rounded text-black" id="backButton">Add New</button>
+        </div>
+    </div>
+    <script>
+      const addForm = document.getElementById("add-form")
+      const successMessage = document.getElementById("successMessage")
+      const backButton = document.getElementById("backButton")
+
+      addForm.addEventListener("submit", submitData)
+
+      function submitData(e){
+        e.preventDefault()
+        google.script.run.withSuccessHandler(()=>{
+          addForm.reset()
+          addForm.classList.add("hidden")
+          successMessage.classList.remove("hidden")
+        }).withFailureHandler(()=>{
+
+        }).acceptAddData(this)
+      }
+
+      backButton.addEventListener("click", ()=>{
+        addForm.classList.remove("hidden")
+        successMessage.classList.add("hidden")
+      })
+    </script>
+</body>
+
+</html>

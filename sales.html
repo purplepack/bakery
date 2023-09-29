@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sales Transaction</title>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-blue-500 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Brand/Logo -->
+            <a href="#" class="text-white text-2xl font-bold">Your Store</a>
+            
+            <!-- Navigation Links -->
+            <ul class="flex space-x-4">
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev" class="text-white hover:text-gray-200">Home</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=add" class="text-white hover:text-gray-200">Add Products</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=sales" class="text-white hover:text-gray-200">Sales Transaction</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=cashier" class="text-white hover:text-gray-200">Cashier</a></li>
+                <li><a href="https://script.google.com/macros/s/AKfycbwIOM9IdTvbqUrSJ-Yf75H3abWEHLD2EL7_c5UiRTNj/dev?page=other" class="text-white hover:text-gray-200">Others</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-8">
+        <h1 class="text-2xl font-semibold mb-4">Sales Transaction</h1>
+        <form id="salesForm">
+
+          <div class="grid grid-cols-2 gap-2">
+
+            <!-- Salesperson/Cashier ID -->
+            <div class="mb-4">
+                <label for="cashierId" class="block text-sm font-medium text-gray-700">Salesperson/Cashier ID</label>
+                <input type="text" id="cashierId" name="cashierId" class="mt-1 p-2 w-full border rounded-md" placeholder="Cashier ID">
+            </div>
+
+            <!-- Sale Date and Time -->
+            <div class="mb-4">
+                <label for="saleDate" class="block text-sm font-medium text-gray-700">Sale Date and Time</label>
+                <input type="datetime-local" id="saleDate" name="saleDate" class="mt-1 p-2 w-full border rounded-md">
+            </div>
+
+          </div>
+
+            <!-- Customer Information -->
+            <div class="mb-4">
+                <label for="customerName" class="block text-sm font-medium text-gray-700">Customer Name</label>
+                <input type="text" id="customerName" name="customerName" class="mt-1 p-2 w-full border rounded-md">
+            </div>
+
+            <!-- Item Entries -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Item Entries</label>
+                  <div class="grid grid-cols-9 gap-2 font-bold text-xs">
+                    <div class="col-span-4">Product</div>
+                    <div class="col-span-1">Qty</div>
+                    <div class="col-span-2">Price/Qty</div>
+                    <div class="col-span-2">Total</div>
+                  </div>
+                  <div class="grid grid-cols-9 gap-2 mb-2">
+                    <div class="col-span-4">
+                      <select class="p-2 border rounded-md w-full" name="product" id="product">
+                            <option disabled selected>Choose Item</option>
+                              <? var all = getCategories();
+                                for (let category of all) { ?>
+                                  <option><?=  category.toString()  ?></option>
+                              <? } ?>
+                        </select>
+                    </div>
+                    <div class="col-span-1"><input id="qty" name="qty" class="p-2 border rounded-md w-full"></div>
+                    <div class="col-span-2"><input id="pricePerQty" name="pricePerQty" class="p-2 border rounded-md w-full"></div>
+                    <div class="col-span-2"><input id="total" name="total" class="p-2 border rounded-md w-full"></div>
+                  </div>
+                
+                <div id="item-entries">
+                    <!-- Item entries will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Add Item Entry Button -->
+            <div class="mb-4">
+                <button type="button" id="addItemEntryBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Item Entry</button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+
+              <!-- Subtotal -->
+              <div class="mb-4">
+                  <label for="subtotal" class="block text-sm font-medium text-gray-700">Subtotal</label>
+                  <input type="number" id="subtotal" name="subtotal" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Discounts -->
+              <div class="mb-4">
+                  <label for="discounts" class="block text-sm font-medium text-gray-700">Discounts</label>
+                  <input type="number" id="discounts" name="discounts" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Taxes -->
+              <div class="mb-4">
+                  <label for="taxes" class="block text-sm font-medium text-gray-700">Taxes</label>
+                  <input type="number" id="taxes" name="taxes" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+
+            <!-- Total Amount -->
+              <div class="mb-4">
+                  <label for="totalAmount" class="block text-sm font-medium text-gray-700">Total Amount</label>
+                  <input type="number" id="totalAmount" name="totalAmount" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+              <!-- Payment Methods -->
+              <div class="mb-4">
+                  <label for="paymentMethod" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                  <select id="paymentMethod" name="paymentMethod" class="mt-1 p-2 w-full border rounded-md">
+                      <option value="cash">Cash</option>
+                      <option value="credit-card">Credit Card</option>
+                      <option value="debit-card">Debit Card</option>
+                  </select>
+              </div>
+
+              <!-- Change Given (for cash transactions) -->
+              <div class="mb-4" id="change-given-section">
+                  <label for="changeGiven" class="block text-sm font-medium text-gray-700">Change Given</label>
+                  <input type="number" id="changeGiven" name="changeGiven" step="0.01" class="mt-1 p-2 w-full border rounded-md">
+              </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Complete Sale</button>
+            </div>
+        </form>
+
+        <div class="hidden flex flex-col gap-5 p-5 mt-5 bg-green-500 items-center justify-center text-white" id="successMessage">
+          Products Added To Database
+          <button class="px-5 py-2 bg-white rounded text-black" id="backButton">Add New</button>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const addItemEntryBtn = document.getElementById("addItemEntryBtn");
+          const itemEntries = document.getElementById("item-entries");
+          const selectElement = document.getElementById("item-name");
+
+          addItemEntryBtn.addEventListener("click", function() {
+              // Create a new row for the item entry
+              const newRow = document.createElement("div");
+              newRow.classList.add('grid', 'grid-cols-9', 'gap-2', 'mb-2')
+              newRow.innerHTML = `
+                  <div class="col-span-4">
+                    <select class="p-2 border rounded-md w-full" name="product" id="product">
+                          <option disabled selected>Choose Item</option>
+                            <? var all = getCategories();
+                              for (let category of all) { ?>
+                                <option><?=  category.toString()  ?></option>
+                            <? } ?>
+                      </select>
+                  </div>
+                  <div class="col-span-1"><input id="qty" name="qty" class="p-2 border rounded-md w-full"></div>
+                  <div class="col-span-2"><input id="pricePerQty" name="pricePerQty" class="p-2 border rounded-md w-full"></div>
+                  <div class="col-span-2"><input id="total" name="total" class="p-2 border rounded-md w-full"></div>
+              `;
+              itemEntries.appendChild(newRow);
+          });
+        });
+
+        const salesForm = document.getElementById("salesForm")
+      const successMessage = document.getElementById("successMessage")
+      const backButton = document.getElementById("backButton")
+
+      salesForm.addEventListener("submit", submitData)
+
+      function submitData(e){
+        e.preventDefault()
+        google.script.run.withSuccessHandler(()=>{
+          salesForm.reset()
+          salesForm.classList.add("hidden")
+          successMessage.classList.remove("hidden")
+        }).withFailureHandler(()=>{
+
+        }).acceptSalesData(this)
+      }
+
+      backButton.addEventListener("click", ()=>{
+        salesForm.classList.remove("hidden")
+        successMessage.classList.add("hidden")
+      })
+    </script>
+</body>
+
+</html>
